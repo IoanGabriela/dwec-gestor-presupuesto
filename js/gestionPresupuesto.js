@@ -19,8 +19,18 @@ function mostrarPresupuesto() {
     alert(`Tu presupuesto actual es de: ${presupuesto} €`);
 }
 
-function CrearGasto() {
-    // TODO
+function CrearGasto(num) {
+    let gasto;
+
+    if (num >= 0){
+        gasto =+ num;
+    }
+    else {
+        alert ('Error, el número introducido no puede ser negativo.')
+        gasto = 0;
+    }
+
+    return gasto;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
