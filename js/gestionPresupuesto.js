@@ -4,12 +4,11 @@
 let presupuesto = 0;
 
 function actualizarPresupuesto(num) {
-    if (num >= 0){
-        presupuesto =+ num;
+    if (typeof num === "number" && num >= 0){
+        presupuesto = num;
     }
     else {
-        alert ('Error, el número introducido no puede ser negativo.')
-        presupuesto = -1;
+        return -1;
     }
 
     return presupuesto;
@@ -46,12 +45,6 @@ function CrearGasto(descripcion, valor) {
         }
     }
 }
-
-let gasto = new CrearGasto(descripcion, valor);
-gasto.mostrarGasto();
-gasto.actualizarDescripcion(descripcionNueva);
-gasto.actualizarValor(valorNuevo);
-
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
