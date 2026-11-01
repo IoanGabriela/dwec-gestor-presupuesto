@@ -19,19 +19,39 @@ function mostrarPresupuesto() {
     alert(`Tu presupuesto actual es de: ${presupuesto} €`);
 }
 
-function CrearGasto(num) {
-    let gasto;
+function CrearGasto(descripcion, valor) {
+    //Propiedades
+    this.descripcion = descripcion;
 
-    if (num >= 0){
-        gasto =+ num;
-    }
-    else {
-        alert ('Error, el número introducido no puede ser negativo.')
-        gasto = 0;
+    if(valor >= 0){
+        this.valor = valor;
+    } else {
+        this.valor = 0;
     }
 
-    return gasto;
+    //Métodos
+    this.mostrarGasto = function() {
+        alert(`Gasto correspondiente a ${descripcion} con valor ${valor} €`);
+    }
+
+    this.actualizarDescripcion = function(descripcionNueva) {
+        this.descripcion = descripcionNueva;
+    }
+
+    this.actualizarValor = function(valorNuevo) {
+        if(valorNuevo >= 0) {
+            this.valor = valorNuevo;
+        } else {
+            this.valor = valor;
+        }
+    }
 }
+
+let gasto = new CrearGasto(descripcion, valor);
+gasto.mostrarGasto();
+gasto.actualizarDescripcion(descripcionNueva);
+gasto.actualizarValor(valorNuevo);
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
