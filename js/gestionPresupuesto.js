@@ -1,7 +1,10 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el enunciado
 
 // TODO: Variable global
+
 let presupuesto = 0;
+let gastos = [];
+let idGasto = 0;
 
 function actualizarPresupuesto(num) {
     if (typeof num === "number" && num >= 0){
@@ -18,7 +21,7 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function CrearGasto(descripcion, valor) {
+function CrearGasto(descripcion, valor, etiquetas) {
     //Propiedades
     this.descripcion = descripcion;
 
@@ -28,9 +31,16 @@ function CrearGasto(descripcion, valor) {
         this.valor = 0;
     }
 
+    this.fecha = Date.now();
+
+    this.etiquetas = etiquetas;
+
     //Métodos
-    this.mostrarGasto = function() {
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+    this.mostrarGastoCompleto = function() {
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
+            Fecha: ${new Date(this.fecha).toLocaleString}
+            Etiquetas: 
+                - ${this.etiquetas.join("\n - ")} `;
     }
 
     this.actualizarDescripcion = function(descripcionNueva) {
@@ -42,6 +52,21 @@ function CrearGasto(descripcion, valor) {
             this.valor = valorNuevo;
         }
     }
+
+    this.actualizarFecha = function(fecha) {
+        let nuevaFecha = Date.parse(fecha);
+
+        if(!typeof nuevaFecha === "number") {
+            this.fecha = nuevaFecha;
+        }
+    }
+
+
+}
+
+
+function listarGastos() {
+    return gastos;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
@@ -50,5 +75,10 @@ function CrearGasto(descripcion, valor) {
 export   {
     mostrarPresupuesto,
     actualizarPresupuesto,
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularTotalGastos,
+    calcularBalance,
     CrearGasto
 }
