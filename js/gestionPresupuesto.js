@@ -5,6 +5,7 @@
 let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
+let fechaParseada = Date.parse(fecha);
 
 function actualizarPresupuesto(num) {
     if (typeof num === "number" && num >= 0){
@@ -21,7 +22,8 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function CrearGasto(descripcion, valor, etiquetas) {
+
+function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     //Propiedades
     this.descripcion = descripcion;
 
@@ -31,14 +33,18 @@ function CrearGasto(descripcion, valor, etiquetas) {
         this.valor = 0;
     }
 
-    this.fecha = Date.now();
+    if (!isNaN(fechaParseada)) {
+        this.fecha = fechaParseada;
+    } else {
+        this.fecha = Date.now();
+    }
 
-    this.etiquetas = etiquetas;
+    this.etiquetas = [];
 
     //Métodos
     this.mostrarGastoCompleto = function() {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
-            Fecha: ${new Date(this.fecha).toLocaleString}
+            Fecha: ${new Date(this.fecha).toLocaleString()}
             Etiquetas: 
                 - ${this.etiquetas.join("\n - ")} `;
     }
@@ -53,20 +59,47 @@ function CrearGasto(descripcion, valor, etiquetas) {
         }
     }
 
-    this.actualizarFecha = function(fecha) {
-        let nuevaFecha = Date.parse(fecha);
-
-        if(!typeof nuevaFecha === "number") {
-            this.fecha = nuevaFecha;
+    this.actualizarFecha = function(fechaNueva) {
+        let timestampNuevo = Date.parse(fechaNueva);
+        if (!isNaN(timestampNuevo)) {
+            this.fecha = timestampNuevo;
         }
-    }
+    };
 
+    this.anyadirEtiquetas = function(...nuevasEtiquetas) {
+        for (let etiqueta of nuevasEtiquetas) {
+            if (!this.etiquetas.includes(etiqueta)) {
+                this.etiquetas.push(etiqueta);
+            }
+        }
+    };
+
+    this.anyadirEtiquetas(...etiquetas);
+
+    this.borrarEtiquetas = function(...etiquetasABorrar) {
+        this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
+    };
 
 }
 
-
 function listarGastos() {
     return gastos;
+}
+
+function anyadirGasto() {
+
+}
+
+function borrarGasto() {
+
+}
+
+function calcularTotalGastos() {
+
+}
+
+function calcularBalance() {
+
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
