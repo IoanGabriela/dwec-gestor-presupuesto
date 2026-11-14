@@ -5,7 +5,6 @@
 let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
-let fechaParseada = Date.parse(fecha);
 
 function actualizarPresupuesto(num) {
     if (typeof num === "number" && num >= 0){
@@ -32,6 +31,8 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     } else {
         this.valor = 0;
     }
+
+    let fechaParseada = Date.parse(fecha);
 
     if (!isNaN(fechaParseada)) {
         this.fecha = fechaParseada;
@@ -77,9 +78,17 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.anyadirEtiquetas(...etiquetas);
 
     this.borrarEtiquetas = function(...etiquetasABorrar) {
-        this.etiquetas = this.etiquetas.filter(etiqueta => !etiquetasABorrar.includes(etiqueta));
-    };
+        let etiquetasFiltradas = [];
 
+        for (let i = 0; i < this.etiquetas.length; i++) {
+            let etiquetaActual = this.etiquetas[i];
+            if (!etiquetasABorrar.includes(etiquetaActual)) {
+                etiquetasFiltradas.push(etiquetaActual);
+            }
+        }
+
+        this.etiquetas = etiquetasFiltradas;
+    };
 }
 
 function listarGastos() {
