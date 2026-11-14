@@ -42,12 +42,17 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     this.etiquetas = [];
 
     //Métodos
+    this.mostrarGasto = function() {
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`;
+    };
+
     this.mostrarGastoCompleto = function() {
-        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
-            Fecha: ${new Date(this.fecha).toLocaleString()}
-            Etiquetas: 
-                - ${this.etiquetas.join("\n - ")}`;
-    }
+        let resultado = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.` +
+                        `\nFecha: ${new Date(this.fecha).toLocaleString()}` +
+                        `\nEtiquetas:\n- ${this.etiquetas.join("\n- ")}`;
+
+        return resultado + "\n";
+    };
 
     this.actualizarDescripcion = function(descripcionNueva) {
         this.descripcion = descripcionNueva;
@@ -104,6 +109,7 @@ function borrarGasto(id) {
     for (let i = 0; i < gastos.length; i++) {
         if (gastos[i].id === id) {
             gastos.splice(i, 1);
+            break;
         }
     }
 }
