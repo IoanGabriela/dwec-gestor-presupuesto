@@ -21,7 +21,6 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-
 function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
     //Propiedades
     this.descripcion = descripcion;
@@ -47,7 +46,7 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.
             Fecha: ${new Date(this.fecha).toLocaleString()}
             Etiquetas: 
-                - ${this.etiquetas.join("\n - ")} `;
+                - ${this.etiquetas.join("\n - ")}`;
     }
 
     this.actualizarDescripcion = function(descripcionNueva) {
