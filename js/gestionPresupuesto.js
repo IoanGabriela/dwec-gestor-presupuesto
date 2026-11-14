@@ -93,7 +93,21 @@ function CrearGasto(descripcion, valor, fecha, ...etiquetas) {
 
         this.etiquetas = etiquetasFiltradas;
     };
+
+    this.obtenerPeriodoAgrupacion = function(periodo) {
+        let fechaObj = new Date(this.fecha);
+        let iso = fechaObj.toISOString();
+
+        if (periodo === "dia") {
+            return iso.slice(0, 10);
+        } else if (periodo === "mes") {
+            return iso.slice(0, 7);  
+        } else if (periodo === "anyo") {
+            return iso.slice(0, 4);
+        }
+    };
 }
+
 
 function listarGastos() {
     return gastos;
@@ -138,5 +152,7 @@ export   {
     borrarGasto,
     calcularTotalGastos,
     calcularBalance,
-    CrearGasto
+    CrearGasto,
+    filtrarGastos,
+    agruparGastos
 }
