@@ -36,8 +36,29 @@ mostrarDatoEnId("balance-total", textoBalanceTotal);
 
 mostrarGastoWeb("listado-gastos-completo", gastoTotal);
 
-let gastoSept21;
+let gastoSept21 = filtrarGastos({
+    fechaDesde: "2021-09-01",
+    fechaHasta: "2021-09-30"
+})
+
+for (let gst of gastoSept21) {
+    mostrarGastoWeb("listado-gastos-filtrado-1", gst);
+}
+
+let gastoSup50 = filtrarGastos({
+    valorMinimo: "50"
+})
+
+for (let gst of gastoSup50){
+    mostrarGastoWeb("listado-gastos-filtrado-2", gst);
+}
+
+let gastoSup200 = filtrarGastos({
+    valorMinimo: "200"
+})
+
+for (let gst of gastoSup200) {
+    mostrarGastoWeb("listado-gastos-filtrado-3", gst);
+}
 
 
-
-mostrarGastoWeb("listado-gastos-filtrado-2", gastoSept21);
