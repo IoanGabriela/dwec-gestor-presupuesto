@@ -28,3 +28,16 @@ let gastoTotal = calcularTotalGastos();
 let textoGastoTotal = `Tu gasto total es ${gastoTotal}€`;
 
 mostrarDatoEnId("gastos-totales", textoGastoTotal);
+
+let balanceTotal = calcularBalance();
+let textoBalanceTotal = `Tu balance total es ${balanceTotal}`;
+
+mostrarDatoEnId("balance-total", textoBalanceTotal);
+
+mostrarGastoWeb("listado-gastos-completo", gastoTotal);
+
+let gastoSept21;
+
+
+
+mostrarGastoWeb("listado-gastos-filtrado-2", gastoSept21);
