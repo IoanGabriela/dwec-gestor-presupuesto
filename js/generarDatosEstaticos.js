@@ -25,15 +25,15 @@ actualizarPresupuesto(valor);
 // MOSTRAR PRESUPUESTO
 textoPresupuesto = mostrarPresupuesto(valor);
 
-mostrarDatoEnId("presupuesto", texto);
+mostrarDatoEnId("presupuesto", textoPresupuesto);
 
 // CREAR  Y AÑADIR GASTOS
-let gasto1 = CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida");
-let gasto2 = CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida");
-let gasto3 = CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte");
-let gasto4 = CrearGasto("Gasolina", 60.42, "2021-10-08", "transporte", "gasolina");
-let gasto5 = CrearGasto("Seguro hogar", 206.45, "2021-09-26", "casa", "seguros");
-let gasto6 = CrearGasto("Seguro coche", 195.78, "2021-10-06", "transporte", "seguros");
+let gasto1 = new CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida");
+let gasto2 = new CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida");
+let gasto3 = new CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte");
+let gasto4 = new CrearGasto("Gasolina", 60.42, "2021-10-08", "transporte", "gasolina");
+let gasto5 = new CrearGasto("Seguro hogar", 206.45, "2021-09-26", "casa", "seguros");
+let gasto6 = new CrearGasto("Seguro coche", 195.78, "2021-10-06", "transporte", "seguros");
 
 anyadirGasto(gasto1);
 anyadirGasto(gasto2);
@@ -55,7 +55,11 @@ let textoBalanceTotal = `Tu balance total es ${balanceTotal}`;
 mostrarDatoEnId("balance-total", textoBalanceTotal);
 
 // MOSTRAR LISTADO COMPLETO GASTOS
-mostrarGastoWeb("listado-gastos-completo", gastoTotal);
+let todosGastos = listarGastos();
+
+for(let gst of todosGastos) {
+    mostrarGastoWeb("listado-gastos-completo", gst)
+}
 
 // GASTOS DE SEPTIEMBRE 2021
 let gastoSept21 = filtrarGastos({
