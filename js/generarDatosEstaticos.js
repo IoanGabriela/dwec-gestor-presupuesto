@@ -1,5 +1,20 @@
-import * as gestionPresupuesto from './gestionPresupuesto.js';
-import * as gestionPresupuestoWeb from './gestionPresupuestoWeb.js';
+import { 
+    actualizarPresupuesto, 
+    mostrarPresupuesto, 
+    CrearGasto, 
+    anyadirGasto, 
+    calcularTotalGastos, 
+    calcularBalance, 
+    listarGastos, 
+    filtrarGastos, 
+    agruparGastos 
+} from './gestionPresupuesto.js';
+
+import { 
+    mostrarDatoEnId, 
+    mostrarGastoWeb, 
+    mostrarGastosAgrupadosWeb 
+} from './gestionPresupuestoWeb.js';
 
 // ACTUALIZAR PRESUPUESTO
 let valor = 1500;
