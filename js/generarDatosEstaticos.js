@@ -1,15 +1,18 @@
 import * as gestionPresupuesto from './gestionPresupuesto.js';
 import * as gestionPresupuestoWeb from './gestionPresupuestoWeb.js';
 
+// ACTUALIZAR PRESUPUESTO
 let valor = 1500;
 let textoPresupuesto = "";
 
 actualizarPresupuesto(valor);
 
+// MOSTRAR PRESUPUESTO
 textoPresupuesto = mostrarPresupuesto(valor);
 
 mostrarDatoEnId("presupuesto", texto);
 
+// CREAR  Y AÑADIR GASTOS
 let gasto1 = CrearGasto("Compra carne", 23.44, "2021-10-06", "casa", "comida");
 let gasto2 = CrearGasto("Compra fruta y verdura", 14.25, "2021-09-06", "supermercado", "comida");
 let gasto3 = CrearGasto("Bonobús", 18.60, "2020-05-26", "transporte");
@@ -24,18 +27,22 @@ anyadirGasto(gasto4);
 anyadirGasto(gasto5);
 anyadirGasto(gasto6);
 
+// MOSTRAR GASTOS TOTALES
 let gastoTotal = calcularTotalGastos();
 let textoGastoTotal = `Tu gasto total es ${gastoTotal}€`;
 
 mostrarDatoEnId("gastos-totales", textoGastoTotal);
 
+// MOSTRAR EL BALANCE TOTAL
 let balanceTotal = calcularBalance();
 let textoBalanceTotal = `Tu balance total es ${balanceTotal}`;
 
 mostrarDatoEnId("balance-total", textoBalanceTotal);
 
+// MOSTRAR LISTADO COMPLETO GASTOS
 mostrarGastoWeb("listado-gastos-completo", gastoTotal);
 
+// GASTOS DE SEPTIEMBRE 2021
 let gastoSept21 = filtrarGastos({
     fechaDesde: "2021-09-01",
     fechaHasta: "2021-09-30"
@@ -45,6 +52,7 @@ for (let gst of gastoSept21) {
     mostrarGastoWeb("listado-gastos-filtrado-1", gst);
 }
 
+// GASTOS >50€
 let gastoSup50 = filtrarGastos({
     valorMinimo: "50"
 })
@@ -53,6 +61,7 @@ for (let gst of gastoSup50){
     mostrarGastoWeb("listado-gastos-filtrado-2", gst);
 }
 
+// GASTOS >200€
 let gastoSup200 = filtrarGastos({
     valorMinimo: "200"
 })
@@ -61,4 +70,25 @@ for (let gst of gastoSup200) {
     mostrarGastoWeb("listado-gastos-filtrado-3", gst);
 }
 
+// GASTOS <50€ + ETIQUETA COMIDA O TRANSPORTE
+let gastoInf50 = filtrarGastos({
+    valorMaximo: "49",
+    etiquetasTiene: "comida",
+    etiquetasTiene: "transporte"
+})
 
+for (let gst of gastoInf50) {
+    mostrarGastoWeb("listado-gastos-filtrado-4", gst);
+}
+
+// GASTOS POR DÍA
+let gastosDia = agruparGastos("dia");
+mostrarGastosAgrupadosWeb("agrupacion-dia", gastosDia, "dia");
+
+// GASTOS POR MES
+let gastosMes = agruparGastos("mes");
+mostrarGastosAgrupadosWeb("agrupacion-mes", gastosMes, "mes");
+
+//GASTOS POR AÑO
+let gastosAnyo = agruparGastos("anyo");
+mostrarGastosAgrupadosWeb("agrupacion-anyo", gastosAnyo, "anyo");
