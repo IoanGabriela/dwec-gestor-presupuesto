@@ -92,7 +92,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 }
 
 // FUNCIÓN PARA EL EVENTO
-function repintar(){
+function repintar() {
 
     // Mostrar presupuesto
     let textoPresupuesto = mostrarPresupuesto();
@@ -121,8 +121,20 @@ function repintar(){
     }
 }
 
+function actualizarPresupuestoWeb() {
+    let textoPresupuestoActualizado = prompt("Introduce tu presupuesto", '');
+    let presupuestoActualizado = Number(textoPresupuestoActualizado);
+
+    actualizarPresupuesto(presupuestoActualizado);
+    repintar();
+}
+
+let botonActualizar = document.getElementById("actualizarpresupuesto");
+botonActualizar.addEventListener("click", actualizarPresupuestoWeb)
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
-    repintar
+    repintar,
+    actualizarPresupuestoWeb
 };
