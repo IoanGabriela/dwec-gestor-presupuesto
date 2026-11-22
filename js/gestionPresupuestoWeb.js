@@ -1,5 +1,18 @@
 // AQUÍ VAN LOS EVENTOS
 
+// Lo pongo así para ahorrarme tener que escribir gestionPresupuesto.función cada vez que quiera usar una función de aquí.
+import { 
+    actualizarPresupuesto, 
+    mostrarPresupuesto, 
+    CrearGasto, 
+    anyadirGasto, 
+    calcularTotalGastos, 
+    calcularBalance, 
+    listarGastos, 
+    filtrarGastos, 
+    agruparGastos 
+} from './gestionPresupuesto.js';
+
 function mostrarDatoEnId (idElemento, valor) {
     let elemento = document.getElementById(idElemento);
     elemento.innerText = valor;
@@ -78,7 +91,38 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     contenedor.appendChild(divAgrupacion);
 }
 
+// FUNCIÓN PARA EL EVENTO
+function repintar(){
+
+    // Mostrar presupuesto
+    let textoPresupuesto = mostrarPresupuesto();
+    mostrarDatoEnId("presupuesto", textoPresupuesto);
+
+    // Mostrar gastos totales
+    let gastoTotal = calcularTotalGastos();
+    let textoGastoTotal = `Tu gasto total es ${gastoTotal}€`;
+    mostrarDatoEnId("gastos-totales", textoGastoTotal);
+
+    // Mostrar el balance total
+    let balanceTotal = calcularBalance();
+    let textoBalanceTotal = `Tu balance total es ${balanceTotal}€`;
+    mostrarDatoEnId("balance-total", textoBalanceTotal);
+
+    // Borrar contenido para no duplicar información
+    let contenedorListado = document.getElementById("listado-gastos-completo");
+    if (contenedorListado) {
+        contenedorListado.innerHTML = "";
+    }
+
+    // Mostrar listado completo de gastos
+    let listaGastos = listarGastos();
+    for (let gst of listaGastos) {
+        mostrarGastoWeb("listado-gastos-completo", gst);
+    }
+}
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
-    mostrarGastosAgrupadosWeb
+    mostrarGastosAgrupadosWeb,
+    repintar
 };
