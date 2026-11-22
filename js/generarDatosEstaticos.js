@@ -73,7 +73,7 @@ for (let gst of gastoSept21) {
 
 // GASTOS >50€
 let gastoSup50 = filtrarGastos({
-    valorMinimo: "50"
+    valorMinimo: 50
 })
 
 for (let gst of gastoSup50){
@@ -82,7 +82,7 @@ for (let gst of gastoSup50){
 
 // GASTOS >200€
 let gastoSup200 = filtrarGastos({
-    valorMinimo: "200"
+    valorMinimo: 200
 })
 
 for (let gst of gastoSup200) {
@@ -91,9 +91,8 @@ for (let gst of gastoSup200) {
 
 // GASTOS <50€ + ETIQUETA COMIDA O TRANSPORTE
 let gastoInf50 = filtrarGastos({
-    valorMaximo: "49",
-    etiquetasTiene: "comida",
-    etiquetasTiene: "transporte"
+    valorMaximo: 49,
+    etiquetasTiene: ["comida", "transporte"]
 })
 
 for (let gst of gastoInf50) {
