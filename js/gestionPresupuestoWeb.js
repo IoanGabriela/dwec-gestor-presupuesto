@@ -1,3 +1,5 @@
+// AQUÍ VAN LOS EVENTOS
+
 function mostrarDatoEnId (idElemento, valor) {
     let elemento = document.getElementById(idElemento);
     elemento.innerText = valor;

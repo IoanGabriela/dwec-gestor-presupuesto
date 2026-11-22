@@ -1,6 +1,4 @@
-// TODO: Crear las funciones, objetos y variables indicadas en el enunciado
-
-// TODO: Variable global
+// AQUÍ VA LA LÓGICA DE LA APLICACIÓN: CREAR, EDITAR, BORRAR, MOSTRAR
 
 let presupuesto = 0;
 let gastos = [];
