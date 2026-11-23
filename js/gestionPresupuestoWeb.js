@@ -91,7 +91,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     contenedor.appendChild(divAgrupacion);
 }
 
-// FUNCIÓN PARA EL EVENTO
+// FUNCIONES PARA EVENTOS
 function repintar() {
 
     // Mostrar presupuesto
@@ -130,7 +130,38 @@ function actualizarPresupuestoWeb() {
 }
 
 let botonActualizar = document.getElementById("actualizarpresupuesto");
-botonActualizar.addEventListener("click", actualizarPresupuestoWeb)
+botonActualizar.addEventListener("click", actualizarPresupuestoWeb);
+
+function nuevoGastoWeb() {
+
+    //Pedir la info necesaria
+    let descripcion = prompt("Descripción del gasto:");
+    let valorTxt = prompt("Valor del gasto:");
+    let fecha = prompt("Fecha del gasto (yyyy-mm-dd):");
+    let etiquetasTexto = prompt("Etiquetas del gasto (etiqueta1,etiqueta2):");
+
+    //Convertimos el valor de string a número
+    let valorNum = Number(valorTxt);
+
+    //Etiquetas de string a array
+    let etiquetasArray;
+    if (etiquetasTexto) {
+        etiquetasArray = etiquetasTexto.split(",");
+    } else {
+        etiquetasArray = [];
+    }
+
+    //Creamos un nuevo gasto, añadimos y repintamos
+    let nuevoGasto = new CrearGasto(descripcion, valorNum, fecha, ...etiquetasArray);
+
+    anyadirGasto(nuevoGasto);
+    repintar();
+}
+
+let botonAnyadir = document.getElementById("anyadirgasto");
+if (botonAnyadir) {
+    botonAnyadir.addEventListener("click", nuevoGastoWeb);
+}
 
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
