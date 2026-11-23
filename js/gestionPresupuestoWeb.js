@@ -192,6 +192,16 @@ function EditarHandle(gasto) {
     };
 }
 
+function BorrarHandle(gasto) {
+
+    this.gasto = gasto;
+
+    this.handleEvent = function(event) {
+        gestionPresupuesto.borrarGasto(this.gasto.id);
+        repintar();
+    };
+}
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
