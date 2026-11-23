@@ -163,9 +163,43 @@ if (botonAnyadir) {
     botonAnyadir.addEventListener("click", nuevoGastoWeb);
 }
 
+function EditarHandle(gasto) {
+
+    this.gasto = gasto;
+
+    this.handleEvent = function(event) {
+        let fechaDefecto = new Date(this.gasto.fecha).toISOString().slice(0, 10);
+        let etiquetasDefecto = this.gasto.etiquetas.join(",");
+
+        let descripcion = prompt("Introduce la nueva descripción:", this.gasto.descripcion);
+        let valorTexto = prompt("Introduce el nuevo valor:", this.gasto.valor);
+        let fecha = prompt("Introduce la nueva fecha (yyyy-mm-dd):", fechaDefecto);
+        let etiquetasTexto = prompt("Introduce las etiquetas separadas por comas:", etiquetasDefecto);
+
+        let valorNumerico = Number(valorTexto);
+
+        let etiquetasArray = [];
+        if (etiquetasTexto) {
+            etiquetasArray = etiquetasTexto.split(",");
+        }
+
+        this.gasto.actualizarDescripcion(descripcion);
+        this.gasto.actualizarValor(valorNumerico);
+        this.gasto.actualizarFecha(fecha);
+        this.gasto.anyadirEtiquetas(...etiquetasArray);
+
+        repintar();
+    };
+}
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
     repintar,
-    actualizarPresupuestoWeb
+    actualizarPresupuestoWeb,
+    nuevoGastoWeb,
+    EditarHandle,
+    BorrarHandle,
+    BorrarEtiquetasHandle,
+
 };
