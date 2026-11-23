@@ -20,6 +20,7 @@ function mostrarDatoEnId (idElemento, valor) {
 
 function mostrarGastoWeb(idElemento, gasto) {
     let contenedor = document.getElementById(idElemento);
+    if (!contenedor) return;
 
     let divGasto = document.createElement("div");
     divGasto.className = "gasto";
@@ -42,14 +43,41 @@ function mostrarGastoWeb(idElemento, gasto) {
     let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
 
-    for (let i = 0; i < gasto.etiquetas.length; i++) {
-        let span = document.createElement("span");
-        span.className = "gasto-etiquetas-etiqueta";
-        span.textContent = gasto.etiquetas[i];
-        divEtiquetas.appendChild(span);
-    }
+    if (gasto.etiquetas && Array.isArray(gasto.etiquetas)) {
+        for (let i = 0; i < gasto.etiquetas.length; i++) {
+            let etiquetaActual = gasto.etiquetas[i];
 
+            let span = document.createElement("span");
+            span.className = "gasto-etiquetas-etiqueta";
+            span.textContent = etiquetaActual;
+
+            let manejadorEtiqueta = new BorrarEtiquetasHandle(gasto, etiquetaActual);
+            span.addEventListener("click", manejadorEtiqueta);
+
+            divEtiquetas.appendChild(span);
+        }
+    }
     divGasto.appendChild(divEtiquetas);
+
+    let botonEditar = document.createElement("button");
+    botonEditar.type = "button";
+    botonEditar.className = "gasto-editar";
+    botonEditar.textContent = "Editar";
+
+    let manejadorEditar = new EditarHandle(gasto);
+    botonEditar.addEventListener("click", manejadorEditar);
+
+    divGasto.appendChild(botonEditar);
+
+    let botonBorrar = document.createElement("button");
+    botonBorrar.type = "button";
+    botonBorrar.className = "gasto-borrar";
+    botonBorrar.textContent = "Borrar";
+
+    let manejadorBorrar = new BorrarHandle(gasto);
+    botonBorrar.addEventListener("click", manejadorBorrar);
+
+    divGasto.appendChild(botonBorrar);
     contenedor.appendChild(divGasto);
 }
 
@@ -219,5 +247,4 @@ export {mostrarDatoEnId,
     EditarHandle,
     BorrarHandle,
     BorrarEtiquetasHandle,
-
 };
