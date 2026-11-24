@@ -43,42 +43,51 @@ function mostrarGastoWeb(idElemento, gasto) {
 
     let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
-
     if (gasto.etiquetas && Array.isArray(gasto.etiquetas)) {
-        for (let i = 0; i < gasto.etiquetas.length; i++) {
-            let etiquetaActual = gasto.etiquetas[i];
+    for (let i = 0; i < gasto.etiquetas.length; i++) {
+        let etiquetaActual = gasto.etiquetas[i];
+        let span = document.createElement("span");
+        span.className = "gasto-etiquetas-etiqueta";
+        span.textContent = etiquetaActual;
 
-            let span = document.createElement("span");
-            span.className = "gasto-etiquetas-etiqueta";
-            span.textContent = etiquetaActual;
+        // Evento para borrar etiqueta al hacer clic
+        let manejadorEtiqueta = new BorrarEtiquetasHandle(gasto, etiquetaActual);
+        span.addEventListener("click", manejadorEtiqueta);
 
-            let manejadorEtiqueta = new BorrarEtiquetasHandle(gasto, etiquetaActual);
-            span.addEventListener("click", manejadorEtiqueta);
-
-            divEtiquetas.appendChild(span);
-        }
+        divEtiquetas.appendChild(span);
+    }
     }
     divGasto.appendChild(divEtiquetas);
 
+    // Botón Editar
     let botonEditar = document.createElement("button");
     botonEditar.type = "button";
     botonEditar.className = "gasto-editar";
     botonEditar.textContent = "Editar";
-
     let manejadorEditar = new EditarHandle(gasto);
     botonEditar.addEventListener("click", manejadorEditar);
-
     divGasto.appendChild(botonEditar);
 
+    // Botón Borrar
     let botonBorrar = document.createElement("button");
     botonBorrar.type = "button";
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
-
     let manejadorBorrar = new BorrarHandle(gasto);
     botonBorrar.addEventListener("click", manejadorBorrar);
-
     divGasto.appendChild(botonBorrar);
+
+    // Botón Editar (form)
+    let botonEditarFormulario = document.createElement("button");
+    botonEditarFormulario.type = "button";
+    botonEditarFormulario.className = "gasto-editar-formulario";
+    botonEditarFormulario.textContent = "Editar (formulario)";
+
+    let manejadorEditarFormulario = new EditarHandleFormulario(gasto);
+    botonEditarFormulario.addEventListener("click", manejadorEditarFormulario);
+
+    divGasto.appendChild(botonEditarFormulario);
+
     contenedor.appendChild(divGasto);
 }
 
@@ -239,6 +248,112 @@ function BorrarEtiquetasHandle(gasto, etiqueta) {
     };
 }
 
+// FORMULARIOS
+function ManejadorCancelar(formulario, botonAnyadir) {
+    this.formulario = formulario;
+    this.botonAnyadir = botonAnyadir;
+
+    this.handleEvent = function(event) {
+    this.formulario.remove();
+    this.botonAnyadir.removeAttribute("disabled");
+    };
+}
+
+function nuevoGastoWebFormulario(event) {
+    let botonAnyadir = event.currentTarget;
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    let formulario = plantillaFormulario.querySelector("form");
+
+    formulario.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let form = e.currentTarget;
+    let descripcion = form.elements.descripcion.value;
+    let valorNum = Number(form.elements.valor.value);
+    let fecha = form.elements.fecha.value;
+    let etiquetasTexto = form.elements.etiquetas.value;
+
+    let etiquetasArray = [];
+    if (etiquetasTexto) {
+        etiquetasArray = etiquetasTexto.split(",");
+    }
+
+    let nuevoGasto = new CrearGasto(descripcion, valorNum, fecha, ...etiquetasArray);
+    anyadirGasto(nuevoGasto);
+    repintar();
+
+    form.remove();
+
+    botonAnyadir.removeAttribute("disabled");
+    });
+
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    let manejadorCancelar = new ManejadorCancelar(formulario, botonAnyadir);
+    botonCancelar.addEventListener("click", manejadorCancelar);
+
+    botonAnyadir.setAttribute("disabled", "true");
+
+    document.getElementById("controlesprincipales").append(plantillaFormulario);
+}
+
+function FormularioEditarSubmitHandle(gasto) {
+    this.gasto = gasto;
+
+    this.handleEvent = function(e) {
+    e.preventDefault();
+
+    let form = e.currentTarget;
+    let descripcion = form.elements.descripcion.value;
+    let valorNum = Number(form.elements.valor.value);
+    let fecha = form.elements.fecha.value;
+    let etiquetasTexto = form.elements.etiquetas.value;
+
+    let etiquetasArray = [];
+    if (etiquetasTexto) {
+        etiquetasArray = etiquetasTexto.split(",");
+    }
+
+    this.gasto.actualizarDescripcion(descripcion);
+    this.gasto.actualizarValor(valorNum);
+    this.gasto.actualizarFecha(fecha);
+
+    this.gasto.borrarEtiquetas(...this.gasto.etiquetas);
+    this.gasto.anyadirEtiquetas(...etiquetasArray);
+
+    form.remove();
+
+    repintar();
+    };
+}
+
+function EditarHandleFormulario(gasto) {
+    this.gasto = gasto;
+
+    this.handleEvent = function(event) {
+    
+    let botonEditarFormulario = event.currentTarget;
+   
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    let formulario = plantillaFormulario.querySelector("form");
+
+    formulario.elements.descripcion.value = this.gasto.descripcion;
+    formulario.elements.valor.value = this.gasto.valor;
+    formulario.elements.fecha.value = new Date(this.gasto.fecha).toISOString().slice(0, 10);
+    formulario.elements.etiquetas.value = this.gasto.etiquetas.join(",");
+    
+    let manejadorSubmit = new FormularioEditarSubmitHandle(this.gasto);
+    formulario.addEventListener("submit", manejadorSubmit);
+
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    let manejadorCancelar = new ManejadorCancelar(formulario, botonEditarFormulario);
+    botonCancelar.addEventListener("click", manejadorCancelar);
+
+    botonEditarFormulario.setAttribute("disabled", "true");
+
+    document.getElementById("controlesprincipales").append(plantillaFormulario);
+  };
+}
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
@@ -248,4 +363,8 @@ export {mostrarDatoEnId,
     EditarHandle,
     BorrarHandle,
     BorrarEtiquetasHandle,
+    ManejadorCancelar,
+    nuevoGastoWebFormulario,
+    FormularioEditarSubmitHandle,
+    EditarHandleFormulario
 };
