@@ -294,6 +294,64 @@ function nuevoGastoWebFormulario(event) {
     document.getElementById("controlesprincipales").append(plantillaFormulario);
 }
 
+function FormularioEditarSubmitHandle(gasto) {
+    this.gasto = gasto;
+
+    this.handleEvent = function(e) {
+
+    e.preventDefault();
+
+    let form = e.currentTarget;
+    let descripcion = form.elements.descripcion.value;
+    let valorNum = Number(form.elements.valor.value);
+    let fecha = form.elements.fecha.value;
+    let etiquetasTexto = form.elements.etiquetas.value;
+
+    let etiquetasArray = [];
+    if (etiquetasTexto) {
+        etiquetasArray = etiquetasTexto.split(",");
+    }
+
+    this.gasto.actualizarDescripcion(descripcion);
+    this.gasto.actualizarValor(valorNum);
+    this.gasto.actualizarFecha(fecha);
+
+    // Reemplazamos las etiquetas por las nuevas
+    this.gasto.borrarEtiquetas(...this.gasto.etiquetas);
+    this.gasto.anyadirEtiquetas(...etiquetasArray);
+
+    repintar();
+    };
+}
+
+function EditarHandleFormulario(gasto) {
+    this.gasto = gasto;
+
+    this.handleEvent = function(event) {
+    
+    let botonEditarFormulario = event.currentTarget;
+   
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    let formulario = plantillaFormulario.querySelector("form");
+
+    formulario.elements.descripcion.value = this.gasto.descripcion;
+    formulario.elements.valor.value = this.gasto.valor;
+    formulario.elements.fecha.value = new Date(this.gasto.fecha).toISOString().slice(0, 10);
+    formulario.elements.etiquetas.value = this.gasto.etiquetas.join(",");
+    
+    let manejadorSubmit = new FormularioEditarSubmitHandle(this.gasto);
+    formulario.addEventListener("submit", manejadorSubmit);
+
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    let manejadorCancelar = new ManejadorCancelar(formulario, botonEditarFormulario);
+    botonCancelar.addEventListener("click", manejadorCancelar);
+
+    botonEditarFormulario.setAttribute("disabled", "true");
+
+    document.getElementById("controlesprincipales").append(plantillaFormulario);
+  };
+}
+
 export {mostrarDatoEnId, 
     mostrarGastoWeb,
     mostrarGastosAgrupadosWeb,
@@ -304,5 +362,7 @@ export {mostrarDatoEnId,
     BorrarHandle,
     BorrarEtiquetasHandle,
     ManejadorCancelar,
-    nuevoGastoWebFormulario
+    nuevoGastoWebFormulario,
+    FormularioEditarSubmitHandle,
+    EditarHandleFormulario
 };
