@@ -266,6 +266,7 @@ function nuevoGastoWebFormulario(event) {
 
     formulario.addEventListener("submit", function(e) {
     e.preventDefault();
+
     let form = e.currentTarget;
     let descripcion = form.elements.descripcion.value;
     let valorNum = Number(form.elements.valor.value);
@@ -278,9 +279,10 @@ function nuevoGastoWebFormulario(event) {
     }
 
     let nuevoGasto = new CrearGasto(descripcion, valorNum, fecha, ...etiquetasArray);
-
     anyadirGasto(nuevoGasto);
     repintar();
+
+    form.remove();
 
     botonAnyadir.removeAttribute("disabled");
     });
@@ -298,7 +300,6 @@ function FormularioEditarSubmitHandle(gasto) {
     this.gasto = gasto;
 
     this.handleEvent = function(e) {
-
     e.preventDefault();
 
     let form = e.currentTarget;
@@ -316,9 +317,10 @@ function FormularioEditarSubmitHandle(gasto) {
     this.gasto.actualizarValor(valorNum);
     this.gasto.actualizarFecha(fecha);
 
-    // Reemplazamos las etiquetas por las nuevas
     this.gasto.borrarEtiquetas(...this.gasto.etiquetas);
     this.gasto.anyadirEtiquetas(...etiquetasArray);
+
+    form.remove();
 
     repintar();
     };
