@@ -43,42 +43,51 @@ function mostrarGastoWeb(idElemento, gasto) {
 
     let divEtiquetas = document.createElement("div");
     divEtiquetas.className = "gasto-etiquetas";
-
     if (gasto.etiquetas && Array.isArray(gasto.etiquetas)) {
-        for (let i = 0; i < gasto.etiquetas.length; i++) {
-            let etiquetaActual = gasto.etiquetas[i];
+    for (let i = 0; i < gasto.etiquetas.length; i++) {
+        let etiquetaActual = gasto.etiquetas[i];
+        let span = document.createElement("span");
+        span.className = "gasto-etiquetas-etiqueta";
+        span.textContent = etiquetaActual;
 
-            let span = document.createElement("span");
-            span.className = "gasto-etiquetas-etiqueta";
-            span.textContent = etiquetaActual;
+        // Evento para borrar etiqueta al hacer clic
+        let manejadorEtiqueta = new BorrarEtiquetasHandle(gasto, etiquetaActual);
+        span.addEventListener("click", manejadorEtiqueta);
 
-            let manejadorEtiqueta = new BorrarEtiquetasHandle(gasto, etiquetaActual);
-            span.addEventListener("click", manejadorEtiqueta);
-
-            divEtiquetas.appendChild(span);
-        }
+        divEtiquetas.appendChild(span);
+    }
     }
     divGasto.appendChild(divEtiquetas);
 
+    // Botón Editar
     let botonEditar = document.createElement("button");
     botonEditar.type = "button";
     botonEditar.className = "gasto-editar";
     botonEditar.textContent = "Editar";
-
     let manejadorEditar = new EditarHandle(gasto);
     botonEditar.addEventListener("click", manejadorEditar);
-
     divGasto.appendChild(botonEditar);
 
+    // Botón Borrar
     let botonBorrar = document.createElement("button");
     botonBorrar.type = "button";
     botonBorrar.className = "gasto-borrar";
     botonBorrar.textContent = "Borrar";
-
     let manejadorBorrar = new BorrarHandle(gasto);
     botonBorrar.addEventListener("click", manejadorBorrar);
-
     divGasto.appendChild(botonBorrar);
+
+    // Botón Editar (form)
+    let botonEditarFormulario = document.createElement("button");
+    botonEditarFormulario.type = "button";
+    botonEditarFormulario.className = "gasto-editar-formulario";
+    botonEditarFormulario.textContent = "Editar (formulario)";
+
+    let manejadorEditarFormulario = new EditarHandleFormulario(gasto);
+    botonEditarFormulario.addEventListener("click", manejadorEditarFormulario);
+
+    divGasto.appendChild(botonEditarFormulario);
+
     contenedor.appendChild(divGasto);
 }
 
@@ -294,5 +303,6 @@ export {mostrarDatoEnId,
     EditarHandle,
     BorrarHandle,
     BorrarEtiquetasHandle,
+    ManejadorCancelar,
     nuevoGastoWebFormulario
 };
